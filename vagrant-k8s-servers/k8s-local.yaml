@@ -1,0 +1,17 @@
+---
+- name: Install common packages and configuration
+  hosts: all
+  roles:
+    - common
+    - firewalld
+
+- name: Configure firewalld rules for workernode
+  hosts: workernode
+  roles:
+    - workernode
+
+- name: Configure firewalld rules for masternode
+  hosts: masternode
+  roles:
+    - masternode
+...

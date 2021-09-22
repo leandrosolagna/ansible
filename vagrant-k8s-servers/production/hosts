@@ -1,0 +1,5 @@
+[masternode]
+masternode.local
+
+[workernode]
+workernode.local

@@ -4,6 +4,7 @@
   roles:
     - common
     - firewalld
+    - rke
 
 - name: Configure firewalld rules for workernode
   hosts: workernode

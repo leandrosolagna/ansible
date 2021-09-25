@@ -4,15 +4,17 @@
   roles:
     - common
     - firewalld
+
+- name: Hosts that control kubernetes
+  hosts: clustercontrol
+  roles:
+    - clustercontrol
     - rke
 
-- name: Configure firewalld rules for workernode
-  hosts: workernode
-  roles:
-    - workernode
-
-- name: Configure firewalld rules for masternode
-  hosts: masternode
+- name: Kubernetes hosts
+  hosts: kubernetes
   roles:
     - masternode
+    - workernode
+    - docker
 ...

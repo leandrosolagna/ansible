@@ -23,6 +23,13 @@
       - docker-ce-cli-{{ docker_ce_cli }}
     state: present
 
+- name: Add user to docker group
+  user:
+    name: vagrant
+    shell: /bin/bash
+    groups: vagrant,docker
+    append: yes
+
 - name: Start docker services
   systemd:
     name: "{{ item }}"

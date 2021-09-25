@@ -1,3 +1,6 @@
+[clustercontrol]
+clustercontrol.local
+
 [masternode]
 masternode.local
 

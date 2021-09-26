@@ -20,4 +20,18 @@
     - {port: "30000-32767", proto: "tcp", state: "enabled", zone: "public" }
     - {port: "30000-32767", proto: "udp", state: "enabled", zone: "public" }
   notify: Reload firewalld
+
+- name: Copy hosts file
+  copy:
+    src: hosts
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Set authorized_key
+  authorized_key:
+    user: vagrant
+    state: present
+    key: "{{ lookup('file', 'public_keys/k8s.pub') }}"
 ...

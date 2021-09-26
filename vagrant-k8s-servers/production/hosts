@@ -6,3 +6,7 @@ masternode.local
 
 [workernode]
 workernode.local
+
+[kubernetes]
+masternode.local
+workernode.local

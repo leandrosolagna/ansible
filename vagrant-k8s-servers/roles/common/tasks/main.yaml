@@ -2,40 +2,13 @@
 - name: Disable swap
   shell: swapoff --all
 
-- name: Install yum-utils
+- name: Install epel-release
   yum:
-    name: yum-utils-{{ yum_utils }}
+    name: epel-release-7
     state: present
 
-- name: Add docker-ce repository
-  yum_repository:
-    name: docker-ce
-    description: docker-ce repository
-    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
-    gpgcheck: yes
-    gpgkey: https://download.docker.com/linux/rhel/gpg
-
-- name: Install docker-ce
+- name: Install htop
   yum:
-    name:
-      - containerd.io-{{ containerd_io }}
-      - docker-ce-{{ docker_ce }}
-      - docker-ce-cli-{{ docker_ce_cli }}
+    name: htop-{{ htop_version }}
     state: present
-
-- name: Add user to docker group
-  user:
-    name: vagrant
-    shell: /bin/bash
-    groups: vagrant,docker
-    append: yes
-
-- name: Start docker services
-  systemd:
-    name: "{{ item }}"
-    enabled: yes
-    state: started
-  with_items:
-    - containerd
-    - docker
 ...

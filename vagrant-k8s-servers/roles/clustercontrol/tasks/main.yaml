@@ -9,14 +9,11 @@
 
 - name: Copy ssh private key
   copy:
-    src: "{{ item }}"
-    dest: "/home/vagrant/.ssh/{{ item }}"
+    src: "k8s"
+    dest: "/home/vagrant/.ssh/k8s"
     mode: 0600
     owner: vagrant
     group: vagrant
-  with_items:
-    - k8s
-    - k8s.pub
 
 - name: Copy ssh config file
   copy:

@@ -1,0 +1,95 @@
+---
+nodes:
+- address: 192.168.21.10
+  port: "22"
+  role:
+  - controlplane
+  - etcd
+  hostname_override: masternode.local
+  user: vagrant
+  docker_socket: /var/run/docker.sock
+  ssh_key_path: "/home/vagrant/.ssh/k8s"
+  taints:
+  - key: node-role.kubernetes.io/master
+    value: ""
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/master
+    value: ""
+    effect: NoExecute
+- address: 192.168.21.20
+  port: "22"
+  role:
+  - worker
+  hostname_override: workernode.local
+  user: vagrant
+  docker_socket: /var/run/docker.sock
+  ssh_key_path: "/home/vagrant/.ssh/k8s"
+services:
+  etcd:
+    snapshot: true
+    backup_config:
+      interval_hours: 6
+      retention: 6
+  kube-api:
+    service_cluster_ip_range: 10.43.0.0/16
+    pod_security_policy: false
+    always_pull_images: false
+  kube-controller:
+    cluster_cidr: 10.42.0.0/16
+    service_cluster_ip_range: 10.43.0.0/16
+  kubelet:
+    cluster_domain: cluster.local
+    cluster_dns_server: 10.43.0.10
+    fail_swap_on: true
+    generate_serving_certificate: false
+network:
+  plugin: weave
+  mtu: 1376
+  update_strategy:
+    strategy: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+authentication:
+  strategy: x509
+system_images:
+  etcd: rancher/mirrored-coreos-etcd:v3.4.16-rancher1
+  alpine: rancher/rke-tools:v0.1.78
+  nginx_proxy: rancher/rke-tools:v0.1.78
+  cert_downloader: rancher/rke-tools:v0.1.78
+  kubernetes_services_sidecar: rancher/rke-tools:v0.1.78
+  kubedns: rancher/mirrored-k8s-dns-kube-dns:1.17.4
+  dnsmasq: rancher/mirrored-k8s-dns-dnsmasq-nanny:1.17.4
+  kubedns_sidecar: rancher/mirrored-k8s-dns-sidecar:1.17.4
+  kubedns_autoscaler: rancher/mirrored-cluster-proportional-autoscaler:1.8.3
+  coredns: rancher/mirrored-coredns-coredns:1.8.4
+  coredns_autoscaler: rancher/mirrored-cluster-proportional-autoscaler:1.8.3
+  nodelocal: rancher/mirrored-k8s-dns-node-cache:1.18.0
+  kubernetes: rancher/hyperkube:v1.21.5-rancher1
+  weave_node: weaveworks/weave-kube:2.8.1
+  weave_cni: weaveworks/weave-npc:2.8.1
+  pod_infra_container: rancher/mirrored-pause:3.4.1
+  ingress: rancher/nginx-ingress-controller:nginx-0.48.1-rancher1
+  ingress_backend: rancher/mirrored-nginx-ingress-controller-defaultbackend:1.5-rancher1
+  ingress_webhook: rancher/mirrored-jettech-kube-webhook-certgen:v1.5.1
+  metrics_server: rancher/mirrored-metrics-server:v0.5.0
+  aci_cni_deploy_container: noiro/cnideploy:5.1.1.0.1ae238a
+  aci_host_container: noiro/aci-containers-host:5.1.1.0.1ae238a
+  aci_opflex_container: noiro/opflex:5.1.1.0.1ae238a
+  aci_mcast_container: noiro/opflex:5.1.1.0.1ae238a
+  aci_ovs_container: noiro/openvswitch:5.1.1.0.1ae238a
+  aci_controller_container: noiro/aci-containers-controller:5.1.1.0.1ae238a
+  aci_gbp_server_container: noiro/gbp-server:5.1.1.0.1ae238a
+  aci_opflex_server_container: noiro/opflex-server:5.1.1.0.1ae238a
+ssh_key_path: /home/vagrant/.ssh/k8s
+ssh_agent_auth: false
+authorization:
+  mode: rbac
+ignore_docker_version: false
+enable_cri_dockerd: true
+kubernetes_version: "v1.21.5-rancher1-1"
+cluster_name: "rkecluster"
+addon_job_timeout: 30
+restore:
+  restore: false
+rotate_encryption_key: false
+...

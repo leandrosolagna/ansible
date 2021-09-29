@@ -1,0 +1,20 @@
+---
+- name: Install RKE
+  get_url:
+    url: https://github.com/rancher/rke/releases/download/{{ rke_cli }}/rke_linux-amd64
+    dest: /usr/bin/rke
+    checksum: sha256:{{ rke_cli_sha256 }}
+    mode: 0755
+
+- name: Copy cluster file
+  copy:
+    src: cluster.yml
+    dest: /opt/cluster.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Run RKE cluster.yml
+  shell:
+    cmd: rke up --config /opt/cluster.yml
+...

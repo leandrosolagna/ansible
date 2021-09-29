@@ -1,0 +1,27 @@
+---
+- name: FirewallD ports configuration for worker nodes
+  firewalld:
+    permanent: yes
+    immediate: yes
+    port: "{{item.port}}/{{item.proto}}"
+    state: "{{item.state}}"
+    zone: "{{item.zone}}"
+  with_items:
+    - {port: "80", proto: "tcp", state: "enabled", zone: "public" }
+    - {port: "443", proto: "tcp", state: "enabled", zone: "public" }
+    - {port: "2376", proto: "tcp", state: "enabled", zone: "public" }
+    - {port: "6443", proto: "tcp", state: "enabled", zone: "public" }
+    - {port: "8472", proto: "udp", state: "enabled", zone: "public" }
+    - {port: "9099", proto: "udp", state: "enabled", zone: "public" }
+    - {port: "10250", proto: "tcp", state: "enabled", zone: "public" }
+    - {port: "10254", proto: "tcp", state: "enabled", zone: "public" }
+    - {port: "30000-32767", proto: "tcp", state: "enabled", zone: "public" }
+    - {port: "30000-32767", proto: "udp", state: "enabled", zone: "public" }
+  notify: Reload firewalld
+
+- name: Set authorized_key
+  authorized_key:
+    user: vagrant
+    state: present
+    key: "{{ lookup('file', 'public_keys/k8s.pub') }}"
+...

@@ -1,0 +1,12 @@
+[clustercontrol]
+clustercontrol.local
+
+[masternode]
+masternode.local
+
+[workernode]
+workernode.local
+
+[kubernetes]
+masternode.local
+workernode.local

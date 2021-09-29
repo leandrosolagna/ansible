@@ -1,0 +1,25 @@
+---
+- name: Copy hosts file
+  copy:
+    src: hosts
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy ssh private key
+  copy:
+    src: "k8s"
+    dest: "/home/vagrant/.ssh/k8s"
+    mode: 0600
+    owner: vagrant
+    group: vagrant
+
+- name: Copy ssh config file
+  copy:
+    src: ssh_config
+    dest: /home/vagrant/.ssh/config
+    owner: vagrant
+    group: vagrant
+    mode: 0644
+...

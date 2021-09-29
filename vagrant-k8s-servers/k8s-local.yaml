@@ -1,0 +1,20 @@
+---
+- name: Install common packages and configuration
+  hosts: all
+  roles:
+    - common
+    - firewalld
+
+- name: Hosts that control kubernetes
+  hosts: clustercontrol
+  roles:
+    - clustercontrol
+    - rke
+
+- name: Kubernetes hosts
+  hosts: kubernetes
+  roles:
+    - masternode
+    - workernode
+    - docker
+...

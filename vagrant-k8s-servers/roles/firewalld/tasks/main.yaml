@@ -1,0 +1,12 @@
+---
+- name: FirewallD configuration for master nodes
+  firewalld:
+    permanent: yes
+    immediate: yes
+    service: "{{item.service}}"
+    state: "{{item.state}}"
+    zone: "{{item.zone}}"
+  with_items:
+    - {service: "ssh", state: "enabled", zone: "public" }
+  notify: Reload firewalld
+...

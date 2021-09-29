@@ -1,0 +1,9 @@
+---
+containerd_io: 1.4.9
+docker_ce: 20.10.8 
+docker_ce_cli: 20.10.8
+htop_version: 2.2.0
+rke_cli: v1.3.1
+rke_cli_sha256: 154d55b3a587edc2da497f621f2b302a393cf70e332001fcd2aad612dd479a41
+yum_utils: 1.1.31
+...

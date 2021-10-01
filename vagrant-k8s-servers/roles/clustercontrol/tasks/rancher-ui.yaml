@@ -1,0 +1,15 @@
+---
+- name: Create rancher_data folder
+  file:
+    path: /rancher
+    state: directory
+    mode: '0755'
+  tags:
+    - rancher-ui
+
+- name: Install docker rancher
+  shell:
+    cmd: docker container run --detach --restart=unless-stopped --publish 80:80 --publish 443:443 --privileged --volume /rancher:/var/lib/rancher --name rancher-ui-{{ rancher_ui_version }} rancher/rancher:{{ rancher_ui_version }}
+  tags:
+    - rancher-ui
+...

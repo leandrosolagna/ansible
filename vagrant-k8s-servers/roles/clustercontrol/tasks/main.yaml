@@ -1,4 +1,9 @@
 ---
+
+- import_tasks: rancher-ui.yaml
+  tags:
+    - rancher-ui
+
 - name: Copy hosts file
   copy:
     src: hosts

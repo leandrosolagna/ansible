@@ -6,15 +6,15 @@
     - firewalld
     - docker
 
-- name: Hosts that control kubernetes
-  hosts: clustercontrol
-  roles:
-    - clustercontrol
-    - rke
-
 - name: Kubernetes hosts
   hosts: kubernetes
   roles:
     - masternode
     - workernode
+
+- name: Hosts that control kubernetes
+  hosts: clustercontrol
+  roles:
+    - clustercontrol
+    - rke
 ...

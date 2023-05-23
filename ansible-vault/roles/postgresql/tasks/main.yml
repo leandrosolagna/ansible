@@ -1,0 +1,60 @@
+---
+- name: "Sign APT repository"
+  apt_key:
+    url: "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
+    state: "present"
+  become: true
+  tags: "postgresql"
+
+- name: "Install APT repository"
+  apt_repository:
+    repo: "deb http://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"
+    state: "present"
+  become: true
+  tags: "postgresql"
+
+- name: "Install postgresql 15"
+  apt:
+    name: "postgresql-15={{ postgresql_15_version }}"
+    state: "present"
+  become: true
+  tags: "postgresql"
+
+- name: "Enabled service postgresql"
+  systemd:
+    name: "postgresql"
+    state: "started"
+    enabled: true
+  become: true
+  tags: "postgresql"
+
+- name: "Create vault database"
+  postgresql_db:
+    name: "vault"
+    state: "present"
+  become: true
+  become_user: "postgres"
+  tags: "postgresql"
+
+- name: "Create vault user"
+  postgresql_user:
+    db: "vault"
+    name: "vault"
+    password: "{{ vault_password }}"
+  become: true
+  become_user: "postgres"
+  tags: "postgresql"
+
+- name: "Allow access from vault server"
+  postgresql_pg_hba:
+    dest: "/etc/postgresql/15/main/pg_hba.conf"
+    contype: host
+    source: "192.168.122.104"
+    users: "vault"
+    databases: "vault"
+    method: "password"
+  become: true
+  notify:
+    - "Reload postgresql service"
+  tags: "postgresql"
+...

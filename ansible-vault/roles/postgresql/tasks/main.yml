@@ -53,6 +53,7 @@
     users: "vault"
     databases: "vault"
     method: "md5"
+    method: "password"
   become: true
   notify:
     - "Reload postgresql service"

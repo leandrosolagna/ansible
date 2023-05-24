@@ -1,0 +1,16 @@
+postgresql-db-1.local ansible_ssh_user=leandro
+vault-server-1.local ansible_ssh_user=leandro
+
+[all:vars]
+ansible_connection=ssh
+ansible_user=leandro
+
+[postgresql-servers]
+postgresql-db-1.local
+
+[vault-servers]
+vault-server-1.local
+
+[servers]
+postgresql-db-1.local
+vault-server-1.local

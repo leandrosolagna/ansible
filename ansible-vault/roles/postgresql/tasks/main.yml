@@ -52,9 +52,28 @@
     source: "192.168.122.104"
     users: "vault"
     databases: "vault"
+    method: "md5"
     method: "password"
   become: true
   notify:
     - "Reload postgresql service"
+  tags: "postgresql"
+
+- name: "Copy vault SQL script"
+  copy:
+    src: "vault_schema.sql"
+    dest: "{{ schema_path_dest }}/vault_schema.sql"
+    owner: "postgres"
+    group: "postgres"
+    mode: "0664"
+  become: true
+  tags: "postgresql"
+
+- name: "Execute vault schema"
+  postgresql_script:
+    db: "vault"
+    path: "{{ schema_path_dest }}/vault_schema.sql"
+  become: true
+  become_user: "postgres"
   tags: "postgresql"
 ...

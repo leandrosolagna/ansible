@@ -53,7 +53,6 @@
     users: "vault"
     databases: "vault"
     method: "md5"
-    method: "password"
   become: true
   notify:
     - "Reload postgresql service"
@@ -70,9 +69,8 @@
   tags: "postgresql"
 
 - name: "Execute vault schema"
-  postgresql_script:
-    db: "vault"
-    path: "{{ schema_path_dest }}/vault_schema.sql"
+  shell:
+    command: "psql --dbname=vault --file={{ schema_path_dest }}/vault_schema.sql --no-password"
   become: true
   become_user: "postgres"
   tags: "postgresql"

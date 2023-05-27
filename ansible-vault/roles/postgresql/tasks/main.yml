@@ -35,6 +35,7 @@
   become: true
   become_user: "postgres"
   tags: "postgresql"
+  register: "database_creation"
 
 - name: "Create vault user"
   postgresql_user:
@@ -70,8 +71,9 @@
 
 - name: "Execute vault schema"
   shell:
-    command: "psql --dbname=vault --file={{ schema_path_dest }}/vault_schema.sql --no-password"
+    cmd: "psql --dbname=vault --file={{ schema_path_dest }}/vault_schema.sql --no-password"
   become: true
   become_user: "postgres"
   tags: "postgresql"
+  when: "database_creation.changed"
 ...
